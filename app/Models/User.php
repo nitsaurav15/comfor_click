@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Events\UserSaved;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -17,11 +18,15 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
+
+    protected $dispatchesEvents = [
+        'saved' => UserSaved::class,
     ];
+
+    public function details()
+    {
+        return $this->hasMany(Detail::class);
+    }
 
     /**
      * The attributes that should be hidden for serialization.
